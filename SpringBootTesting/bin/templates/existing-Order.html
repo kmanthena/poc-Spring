@@ -1,0 +1,30 @@
+<!DOCTYPE HTML>
+<html>
+  <head>
+    <title>Add Rows</title>
+    <script  src="https://ajax.googleapis.com/ajax/libs/angularjs/1.4.3/angular.min.js"></script>
+  </head>
+  <body>
+
+      <table id="dataTable" border="1" >
+        <thead>
+          <tr>
+            <td>Order No</td>
+            <td>First Name </td>
+            <td>Last Name </td>
+            <td>Shipping Zip Code</td>
+            <td>Payment Information</td>
+          </tr>
+        </thead>
+        <tbody>
+          <tr th:each="orders: ${existingOrders}" >
+            <td th:text="${orders.strOrderNo}"> </td>
+            <td th:text="${orders.strFirstName}"> </td>
+            <td th:text="${orders.strLastName}"> </td>
+            <td th:text="${orders.strShipZipCode}"> </td>
+            <td th:text="${orders.strPaymentInfo}"> </td>            
+          </tr>
+        </tbody>
+      </table>
+  </body>
+</html>

@@ -1,0 +1,98 @@
+<!DOCTYPE HTML>
+<html ng-app="myApp">
+  <head>
+    <title>Add Rows</title>
+    <script  src="https://ajax.googleapis.com/ajax/libs/angularjs/1.4.3/angular.min.js"></script>
+  </head>
+  <body ng-controller="MainController">
+<font color="red"> <p data-th-text="${errorMessage}" />  </font>
+    <form method="post">
+      <table width="350px" border="1">
+        <tr>
+          <td>Order No : </td>
+          <td><input type="text" name="strOrderNo" data-ng-model="strOrderNo" required="true" /> </td>
+        </tr>
+        <tr>
+          <td>First Name : </td>
+          <td> <input type="text" name="strFirstName" data-ng-model="strFirstName" /> </td>
+        </tr>
+        <tr>
+          <td>Last Name : </td>
+          <td><input type="text" name="strLastName" data-ng-model="strLastName" /> </td>
+        </tr>
+        <tr>
+          <td>Shipping Zip Code : </td>
+          <td> <input type="text" name="strShipZipCode" data-ng-model="strShipZipCode" /> </td>
+        </tr>
+        <tr>
+          <td>Payment Information : </td>
+          <td> <input type="text" name="strPaymentInfo" data-ng-model="strPaymentInfo" /> </td>
+        </tr>
+      </table>
+      <table id="dataTable" border="1" >
+        <thead>
+          <tr>
+            <td></td>
+            <td>Line No</td>
+            <td>Item ID</td>
+            <td>Quantity</td>
+          </tr>
+        </thead>
+        <tbody>
+          <tr data-ng-repeat="line in lines">
+            <td> <input type="checkbox" name="checkBox" data-ng-model="line.checkBox"/></td>
+            <td> <input type="text" name="lineNo" data-ng-model="line.lineNo" required="true" /> </td>
+            <td> <input type="text" name="itemId" data-ng-model="line.itemId" required="true" /> </td>
+            <td> <input type="text" name="quantity"  data-ng-model="line.quantity"  required="true" />  </td>
+          </tr>
+        </tbody>
+      </table>
+      <div class="form-group">
+        <input type="submit" class="btn btn-primary addnew pull-right" ng-click="addNew()" value="Add New" />
+      </div>
+      <input type="submit" value="SubmitOrder" data-ng-click="createOrder()" />
+    </form>
+    <script>
+      var app = angular.module('myApp', []);
+      app.controller('MainController', function($scope, $http) {
+
+	 $scope.lines = [
+         {
+             'lineNo':'1',
+             'itemId':'',
+          	 'quantity':''
+          }];     
+        
+        
+      $scope.addNew = function(line){
+  
+	      $scope.lines.push({ 
+	      'lineNo': '', 
+	      'itemId': '',
+	      'quantity': '' 
+	      });    
+      }; 
+
+
+      $scope.createOrder = function() {    
+              var data = {
+                strOrderNo : $scope.strOrderNo,
+                strFirstName : $scope.strFirstName,
+                strLastName : $scope.strLastName,
+                strShipZipCode : $scope.strShipZipCode,
+                strPaymentInfo : $scope.strPaymentInfo,
+                lOrderLine :  $scope.lines
+          
+              };
+        	
+			$http.post('http://localhost:8000/createNewOrder', data).success(function(response) {
+             		window.alert("Order is created");
+             		window.location = "createNewOrder.html";
+ 				});
+            };
+            
+      });
+       
+    </script>
+  </body>
+</html>
