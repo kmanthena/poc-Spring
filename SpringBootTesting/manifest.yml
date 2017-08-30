@@ -1,0 +1,9 @@
+---
+applications:
+- name: SpringBootTesting
+  memory: 1024M
+  health-check-type: port
+  stack: cflinuxfs2
+  buildpack: java_buildpack
+  routes:
+  - route: SpringBootTesting.cfapps.io
