@@ -6,5 +6,7 @@ import com.nisum.domain.User;
 
 public interface UserRepository extends MongoRepository<User, String>  {
     
+	public void deleteByStrUserId(String strUserId);
+
 	
 }

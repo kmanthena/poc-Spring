@@ -1,12 +1,13 @@
 <!DOCTYPE HTML>
-<html ng-app="myApp">
+<html >
   <head>
     <title>Existing User</title>
     <script  src="https://ajax.googleapis.com/ajax/libs/angularjs/1.4.3/angular.min.js"></script>
   </head>
-  <body ng-controller="MainController">
+  <body >
+  <div ng-controller="MainController" ng-app="myApp">
 <font color="red"> <p data-th-text="${errorMessage}" />  </font>
-    <form method="post">
+   
       <table id="dataTable" border="1" >
         <thead>
           <tr>
@@ -18,39 +19,38 @@
           </tr>
         </thead>
         <tbody>
-          <tr th:each="user, index: ${users}" >
-            <td th:text="${index.count}"></td>
-            <td th:text="${user.strUserId}" > </td>
-            <td th:text="${user.strFirstName}" > </td>
-            <td th:text="${user.strLastName}" >  </td>
-            <td> <input type="button" value="Remove" th:attr="ng-click='deleteUser('+${index.count}+')'"/></td>
+          <tr ng-repeat="user in users" >
+            <td></td>
+            <td>{{user.strUserId}} </td>
+            <td>{{user.strFirstName}} </td>
+            <td>{{user.strLastName}}</td>
+            <td> <input type="button" value="Remove" ng-click="deleteUser(user.strUserId)"/></td>
             
           </tr>
-          
         </tbody>
-        
-    
-        
-        
       </table>
-     
-    </form>
-    <script>
+     </div>
+
+
+<script>
       var app = angular.module('myApp', []);
       app.controller('MainController', function($scope, $http) {
-
-      $scope.deleteUser = function(count) {    
-
-		var data = {
-				strUserId : count
-		};
-          
-              
-              
-		$http.post('http://localhost:8000/deleteUser/'+count, data).success(function(response) {
 		
-             		window.location = "existingUser.html";
+		$http.get("existing-User").then(function(response) 
+		{
+			$scope.users = response.data;
+			console.log(response.data);
+		});
+
+      $scope.deleteUser = function(userId) {    
+          
+        if(confirm("Delete User "+userId+"????")) {
+		$http.post('http://localhost:8000/deleteUser/'+userId, {}).then(function(response) {
+					window.alert("User has been deleted")
+					window.location = "existingUser.html";
  				});
+ 				
+ 				}
  
             }
             
